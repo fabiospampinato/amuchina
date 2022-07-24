@@ -559,6 +559,7 @@ const SVG_ATTRIBUTES_ALLOW = [
   'direction',
   'display',
   'divisor',
+  'dominant-baseline',
   'dur',
   'edgemode',
   'elevation',
