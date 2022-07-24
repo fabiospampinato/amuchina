@@ -27,12 +27,6 @@ const getNodeNamespace = ( node: Node ): 'HTML' | 'SVG' | 'MATH' => {
 
 };
 
-const isComment = ( value: Node ): value is Comment => {
-
-  return ( value.nodeType === 8 );
-
-};
-
 const isElement = ( value: Node ): value is Element => {
 
   return ( value.nodeType === 1 );
@@ -86,12 +80,6 @@ const isScriptOrDataUrlLoose = (() => {
   };
 
 })();
-
-const isText = ( value: Node ): value is Text => {
-
-  return ( value.nodeType === 3 );
-
-};
 
 const mergeMaps = ( maps: Record<string, string[]>[] ): Record<string, string[]> => {
 
@@ -149,4 +137,4 @@ const traverseElements = ( parent: Node, callback: ( node: Element, parent: Node
 
 /* EXPORT */
 
-export {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, isText, mergeMaps, traverseElements};
+export {cloneDeep, getNodeNamespace, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, mergeMaps, traverseElements};
