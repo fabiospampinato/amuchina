@@ -75,6 +75,18 @@ const isScriptOrDataUrl = (() => {
 
 })();
 
+const isScriptOrDataUrlLoose = (() => {
+
+  const re = /(?:script|data):/i;
+
+  return ( url: string ): boolean => {
+
+    return re.test ( url );
+
+  };
+
+})();
+
 const isText = ( value: Node ): value is Text => {
 
   return ( value.nodeType === 3 );
@@ -133,4 +145,4 @@ const traverse = ( parent: Node, callback: ( node: Node, parent: Node ) => void 
 
 /* EXPORT */
 
-export {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isText, mergeMaps, traverse};
+export {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, isText, mergeMaps, traverse};

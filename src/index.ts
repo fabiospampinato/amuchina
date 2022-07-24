@@ -3,7 +3,7 @@
 
 import {NAMESPACES_ELEMENTS, NAMESPACES_ROOTS, NAMESPACES_PREFIXES} from './constants';
 import {DEFAULTS} from './constants';
-import {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isText, traverse} from './utils';
+import {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, isText, traverse} from './utils';
 import type {Configuration} from './types';
 
 /* MAIN */
@@ -102,7 +102,9 @@ class Amuchina {
 
           if ( isElementHyperlink ( node ) ) {
 
-            if ( isScriptOrDataUrl ( node.protocol ) ) {
+            const href = node.getAttribute ( 'href' );
+
+            if ( href && isScriptOrDataUrlLoose ( href ) && isScriptOrDataUrl ( node.protocol ) ) {
 
               node.removeAttribute ( 'href' );
 
