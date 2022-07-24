@@ -5,18 +5,6 @@ import {NAMESPACES} from './constants';
 
 /* MAIN */
 
-const castFragment = ( value: Document | DocumentFragment ): DocumentFragment => {
-
-  if ( isDocumentFragment ( value ) ) return value;
-
-  const fragment = new DocumentFragment ();
-
-  fragment.appendChild ( value.documentElement );
-
-  return fragment;
-
-};
-
 const cloneDeep = <T> ( value: T ): T => {
 
   return JSON.parse ( JSON.stringify ( value ) );
@@ -42,18 +30,6 @@ const getNodeNamespace = ( node: Node ): 'HTML' | 'SVG' | 'MATH' => {
 const isComment = ( value: Node ): value is Comment => {
 
   return ( value.nodeType === 8 );
-
-};
-
-const isDocument = ( value: Node ): value is Document => {
-
-  return ( value.nodeType === 9 );
-
-};
-
-const isDocumentFragment = ( value: Node ): value is DocumentFragment => {
-
-  return ( value.nodeType === 11 );
 
 };
 
@@ -153,4 +129,4 @@ const traverse = ( parent: Node, callback: ( node: Node, parent: Node ) => void 
 
 /* EXPORT */
 
-export {castFragment, cloneDeep, getNodeNamespace, isComment, isDocument, isDocumentFragment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isText, mergeMaps, traverse};
+export {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isText, mergeMaps, traverse};

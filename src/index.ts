@@ -3,7 +3,7 @@
 
 import {NAMESPACES_ELEMENTS, NAMESPACES_ROOTS, NAMESPACES_PREFIXES} from './constants';
 import {DEFAULTS} from './constants';
-import {castFragment, cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isText, traverse} from './utils';
+import {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isText, traverse} from './utils';
 import type {Configuration} from './types';
 
 /* MAIN */
@@ -55,7 +55,7 @@ class Amuchina {
 
   }
 
-  sanitize = ( input: Document | DocumentFragment ): DocumentFragment => {
+  sanitize = <T extends Document | DocumentFragment> ( input: T ): T => {
 
     //TODO: Support integration points (foreignObject and friends)
     //TODO: Support xlink:href, xml:id, xlink:title, xml:space, xmlns:xlink
@@ -64,9 +64,7 @@ class Amuchina {
     const allowElements = this.#allowElements;
     const allowAttributes = this.#allowAttributes;
 
-    const fragment = castFragment ( input );
-
-    traverse ( fragment, ( node, parent ) => {
+    traverse ( input, ( node, parent ) => {
 
       if ( isComment ( node ) ) {
 
@@ -150,7 +148,7 @@ class Amuchina {
 
     });
 
-    return fragment;
+    return input;
 
   }
 
