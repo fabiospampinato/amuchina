@@ -155,7 +155,7 @@ const traverseElementsIterator = ( parent: Node, callback: ( node: Element, pare
 
 const traverseElements = ( parent: Node, callback: ( node: Element, parent: Node ) => void ) => {
 
-  const hasIterator = !!globalThis.document?.createNodeIterator; // For better WebWorker support
+  const hasIterator = !!globalThis.document && !!globalThis.document.createNodeIterator; // For better WebWorker support
 
   if ( hasIterator ) {
 
