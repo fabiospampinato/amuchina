@@ -819,7 +819,7 @@ const NAMESPACES_PREFIXES = {
 /* OTHERS */
 
 const DEFAULTS = {
-  allowComments: false,
+  allowComments: true,
   allowCustomElements: false,
   allowUnknownMarkup: false,
   allowElements: [

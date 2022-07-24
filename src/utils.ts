@@ -121,7 +121,7 @@ const mergeMaps = ( maps: Record<string, string[]>[] ): Record<string, string[]>
 
 };
 
-const traverse = ( parent: Node, callback: ( node: Node, parent: Node ) => void ) => {
+const traverseElements = ( parent: Node, callback: ( node: Element, parent: Node ) => void ) => {
 
   let current = parent.firstChild;
 
@@ -129,11 +129,15 @@ const traverse = ( parent: Node, callback: ( node: Node, parent: Node ) => void 
 
     const next = current.nextSibling;
 
-    callback ( current, parent );
+    if ( isElement ( current ) ) {
 
-    if ( current.parentNode ) { // Still connected, so recurse
+      callback ( current, parent );
 
-      traverse ( current, callback );
+      if ( current.parentNode ) { // Still connected, so recurse
+
+        traverseElements ( current, callback );
+
+      }
 
     }
 
@@ -145,4 +149,4 @@ const traverse = ( parent: Node, callback: ( node: Node, parent: Node ) => void 
 
 /* EXPORT */
 
-export {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, isText, mergeMaps, traverse};
+export {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, isText, mergeMaps, traverseElements};

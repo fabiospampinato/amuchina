@@ -3,7 +3,7 @@
 
 import {NAMESPACES_ELEMENTS, NAMESPACES_ROOTS, NAMESPACES_PREFIXES} from './constants';
 import {DEFAULTS} from './constants';
-import {cloneDeep, getNodeNamespace, isComment, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, isText, traverse} from './utils';
+import {cloneDeep, getNodeNamespace, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, traverseElements} from './utils';
 import type {Configuration} from './types';
 
 /* MAIN */
@@ -17,7 +17,6 @@ class Amuchina {
   /* VARIABLES */
 
   #configuration: Configuration;
-  #allowComments: boolean;
   #allowElements: Set<string>;
   #allowAttributes: Record<string, string[]>;
 
@@ -25,8 +24,9 @@ class Amuchina {
 
   constructor ( configuration: Configuration = {} ) {
 
-    const {allowCustomElements, allowUnknownMarkup, blockElements, dropElements, dropAttributes} = configuration;
+    const {allowComments, allowCustomElements, allowUnknownMarkup, blockElements, dropElements, dropAttributes} = configuration;
 
+    if ( allowComments === false ) throw new Error ( 'A false "allowComments" is not supported yet' );
     if ( allowCustomElements ) throw new Error ( 'A true "allowCustomElements" is not supported yet' );
     if ( allowUnknownMarkup ) throw new Error ( 'A true "allowUnknownMarkup" is not supported yet' );
     if ( blockElements ) throw new Error ( '"blockElements" is not supported yet, use "allowElements" instead' );
@@ -35,13 +35,11 @@ class Amuchina {
 
     this.#configuration = cloneDeep ( DEFAULTS );
 
-    const {allowComments, allowElements, allowAttributes} = configuration;
+    const {allowElements, allowAttributes} = configuration;
 
-    if ( allowComments ) this.#configuration.allowComments = true;
     if ( allowElements ) this.#configuration.allowElements = configuration.allowElements;
     if ( allowAttributes ) this.#configuration.allowAttributes = configuration.allowAttributes;
 
-    this.#allowComments = !!this.#configuration.allowComments;
     this.#allowElements = new Set ( this.#configuration.allowElements );
     this.#allowAttributes = this.#configuration.allowAttributes || {};
 
@@ -60,91 +58,74 @@ class Amuchina {
     //TODO: Support integration points (foreignObject and friends)
     //TODO: Support xlink:href, xml:id, xlink:title, xml:space, xmlns:xlink
 
-    const allowComments = this.#allowComments;
     const allowElements = this.#allowElements;
     const allowAttributes = this.#allowAttributes;
 
-    traverse ( input, ( node, parent ) => {
+    traverseElements ( input, ( node, parent ) => {
 
-      if ( isElement ( node ) ) {
+      const namespace = getNodeNamespace ( node );
+      const namespaceParent = getNodeNamespace ( parent );
+      const elements = NAMESPACES_ELEMENTS[namespace];
+      const root = NAMESPACES_ROOTS[namespace];
+      const prefix = NAMESPACES_PREFIXES[namespace];
 
-        const namespace = getNodeNamespace ( node );
-        const namespaceParent = getNodeNamespace ( parent );
-        const elements = NAMESPACES_ELEMENTS[namespace];
-        const root = NAMESPACES_ROOTS[namespace];
-        const prefix = NAMESPACES_PREFIXES[namespace];
+      const tag = node.tagName.toLowerCase ();
+      const tagPrefixed = `${prefix}${tag}`;
+      const all = '*';
+      const allPrefixed = `${prefix}${all}`;
 
-        const tag = node.tagName.toLowerCase ();
-        const tagPrefixed = `${prefix}${tag}`;
-        const all = '*';
-        const allPrefixed = `${prefix}${all}`;
-
-        if ( !elements.has ( tag ) || !allowElements.has ( tagPrefixed ) || ( namespace !== namespaceParent && tag !== root ) ) {
-
-          parent.removeChild ( node );
-
-        } else {
-
-          const attributes = node.getAttributeNames ();
-
-          for ( let i = 0; i < attributes.length; i++ ) {
-
-            const attribute = attributes[i];
-            const allowedValues = allowAttributes[attribute];
-
-            if ( !allowedValues || ( !allowedValues.includes ( allPrefixed ) && !allowedValues.includes ( tagPrefixed ) ) ) {
-
-              node.removeAttribute ( attribute );
-
-            }
-
-          }
-
-          if ( isElementHyperlink ( node ) ) {
-
-            const href = node.getAttribute ( 'href' );
-
-            if ( href && isScriptOrDataUrlLoose ( href ) && isScriptOrDataUrl ( node.protocol ) ) {
-
-              node.removeAttribute ( 'href' );
-
-            }
-
-          } else if ( isElementAction ( node ) ) {
-
-            if ( isScriptOrDataUrl ( node.action ) ) {
-
-              node.removeAttribute ( 'action' );
-
-            }
-
-          } else if ( isElementFormAction ( node ) ) {
-
-            if ( isScriptOrDataUrl ( node.formAction ) ) {
-
-              node.removeAttribute ( 'formaction' );
-
-            }
-
-          } else if ( isElementIframe ( node ) ) {
-
-            node.setAttribute ( 'sandobx', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
-
-          }
-
-        }
-
-      } else if ( isComment ( node ) ) {
-
-        if ( !allowComments ) {
-
-          parent.removeChild ( node );
-
-        }
-
-      } else if ( !isText ( node ) ) {
+      if ( !elements.has ( tag ) || !allowElements.has ( tagPrefixed ) || ( namespace !== namespaceParent && tag !== root ) ) {
 
         parent.removeChild ( node );
+
+      } else {
+
+        const attributes = node.getAttributeNames ();
+
+        for ( let i = 0; i < attributes.length; i++ ) {
+
+          const attribute = attributes[i];
+          const allowedValues = allowAttributes[attribute];
+
+          if ( !allowedValues || ( !allowedValues.includes ( allPrefixed ) && !allowedValues.includes ( tagPrefixed ) ) ) {
+
+            node.removeAttribute ( attribute );
+
+          }
+
+        }
+
+        if ( isElementHyperlink ( node ) ) {
+
+          const href = node.getAttribute ( 'href' );
+
+          if ( href && isScriptOrDataUrlLoose ( href ) && isScriptOrDataUrl ( node.protocol ) ) {
+
+            node.removeAttribute ( 'href' );
+
+          }
+
+        } else if ( isElementAction ( node ) ) {
+
+          if ( isScriptOrDataUrl ( node.action ) ) {
+
+            node.removeAttribute ( 'action' );
+
+          }
+
+        } else if ( isElementFormAction ( node ) ) {
+
+          if ( isScriptOrDataUrl ( node.formAction ) ) {
+
+            node.removeAttribute ( 'formaction' );
+
+          }
+
+        } else if ( isElementIframe ( node ) ) {
+
+          node.setAttribute ( 'sandobx', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
+
+        }
 
       }
 
