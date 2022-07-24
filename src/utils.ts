@@ -63,13 +63,17 @@ const isElementHyperlink = ( value: Element ): value is HTMLAnchorElement | HTML
 
 };
 
-const isScriptOrDataUrl = ( url: string ): boolean => {
+const isScriptOrDataUrl = (() => {
 
   const re = /^(?:\w+script|data):/i;
 
-  return re.test ( url );
+  return ( url: string ): boolean => {
 
-};
+    return re.test ( url );
+
+  };
+
+})();
 
 const isText = ( value: Node ): value is Text => {
 

@@ -66,15 +66,7 @@ class Amuchina {
 
     traverse ( input, ( node, parent ) => {
 
-      if ( isComment ( node ) ) {
-
-        if ( !allowComments ) {
-
-          parent.removeChild ( node );
-
-        }
-
-      } else if ( isElement ( node ) ) {
+      if ( isElement ( node ) ) {
 
         const namespace = getNodeNamespace ( node );
         const namespaceParent = getNodeNamespace ( parent );
@@ -137,6 +129,14 @@ class Amuchina {
             node.setAttribute ( 'sandobx', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
 
           }
+
+        }
+
+      } else if ( isComment ( node ) ) {
+
+        if ( !allowComments ) {
+
+          parent.removeChild ( node );
 
         }
 
