@@ -131,17 +131,21 @@ const mergeMaps = ( maps: Record<string, string[]>[] ): Record<string, string[]>
 
 const traverse = ( parent: Node, callback: ( node: Node, parent: Node ) => void ) => {
 
-  const childNodes = parent.childNodes;
+  let current = parent.firstChild;
 
-  for ( let i = childNodes.length - 1; i >= 0; i-- ) { // Looping from the end so that if a child gets disconnected it doesn't matter
+  while ( current ) {
 
-    const child = childNodes[i];
+    const next = current.nextSibling;
 
-    callback ( child, parent );
+    callback ( current, parent );
 
-    if ( !child.parentNode ) continue; // Got disconnected, skipping
+    if ( current.parentNode ) { // Still connected, so recurse
 
-    traverse ( child, callback );
+      traverse ( current, callback );
+
+    }
+
+    current = next;
 
   }
 
