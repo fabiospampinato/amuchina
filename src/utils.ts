@@ -109,7 +109,7 @@ const mergeMaps = ( maps: Record<string, string[]>[] ): Record<string, string[]>
 
 };
 
-const traverseElements = ( parent: Node, callback: ( node: Element, parent: Node ) => void ) => {
+const traverseElementsBasic = ( parent: Node, callback: ( node: Element, parent: Node ) => void ) => {
 
   let current = parent.firstChild;
 
@@ -123,13 +123,47 @@ const traverseElements = ( parent: Node, callback: ( node: Element, parent: Node
 
       if ( current.parentNode ) { // Still connected, so recurse
 
-        traverseElements ( current, callback );
+        traverseElementsBasic ( current, callback );
 
       }
 
     }
 
     current = next;
+
+  }
+
+};
+
+const traverseElementsIterator = ( parent: Node, callback: ( node: Element, parent: Node ) => void ) => {
+
+  const iterator = document.createNodeIterator ( parent, NodeFilter.SHOW_ELEMENT );
+
+  let current: Node | null | undefined;
+
+  while ( current = iterator.nextNode () ) {
+
+    const parent = current.parentNode;
+
+    if ( !parent ) continue;
+
+    callback ( current as Element, parent ); //TSC
+
+  }
+
+};
+
+const traverseElements = ( parent: Node, callback: ( node: Element, parent: Node ) => void ) => {
+
+  const hasIterator = !!globalThis.document?.createNodeIterator; // For better WebWorker support
+
+  if ( hasIterator ) {
+
+    return traverseElementsIterator ( parent, callback );
+
+  } else {
+
+    return traverseElementsBasic ( parent, callback );
 
   }
 
