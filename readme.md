@@ -1,6 +1,6 @@
 # Amuchina
 
-A work-in-progress HTML sanitizer that strives for: performance like `window.Sanitizer`, readyness like `DOMPurify`, and ability to run in a `WebWorker` like neither of those.
+A work-in-progress HTML sanitizer that strives for: performance like `window.Sanitizer`, readiness like `DOMPurify`, and ability to run in a `WebWorker` like neither of those.
 
 This is basically an implementation of a _subset_ of the upcoming [Sanitizer API](https://wicg.github.io/sanitizer-api/), but it also supports SVG and MathML out of the box.
 
