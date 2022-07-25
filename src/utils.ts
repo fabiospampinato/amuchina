@@ -41,7 +41,7 @@ const isElementAction = ( value: Element ): value is HTMLFormElement => {
 
 const isElementIframe = ( value: Element ): value is HTMLIFrameElement => {
 
-  return ( value.tagName.toLowerCase () === 'iframe' );
+  return ( value.tagName === 'IFRAME' );
 
 };
 
