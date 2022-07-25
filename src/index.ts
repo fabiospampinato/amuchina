@@ -18,7 +18,7 @@ class Amuchina {
 
   #configuration: Configuration;
   #allowElements: Set<string>;
-  #allowAttributes: Record<string, string[]>;
+  #allowAttributes: Record<string, Set<string>>;
 
   /* CONSTRUCTOR */
 
@@ -41,7 +41,7 @@ class Amuchina {
     if ( allowAttributes ) this.#configuration.allowAttributes = configuration.allowAttributes;
 
     this.#allowElements = new Set ( this.#configuration.allowElements );
-    this.#allowAttributes = this.#configuration.allowAttributes || {};
+    this.#allowAttributes = Object.fromEntries ( Object.entries ( this.#configuration.allowAttributes || {} ).map ( ([ element, attributes ]) => [element, new Set ( attributes )] ) );
 
   }
 
@@ -90,7 +90,7 @@ class Amuchina {
             const attribute = attributes[i];
             const allowedValues = allowAttributes[attribute];
 
-            if ( !allowedValues || ( !allowedValues.includes ( allPrefixed ) && !allowedValues.includes ( tagPrefixed ) ) ) {
+            if ( !allowedValues || ( !allowedValues.has ( allPrefixed ) && !allowedValues.has ( tagPrefixed ) ) ) {
 
               node.removeAttribute ( attribute );
 
