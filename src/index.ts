@@ -82,7 +82,7 @@ class Amuchina {
 
         const attributes = node.getAttributeNames ();
 
-        for ( let i = 0; i < attributes.length; i++ ) {
+        for ( let i = 0, l = attributes.length; i < l; i++ ) {
 
           const attribute = attributes[i];
           const allowedValues = allowAttributes[attribute];
