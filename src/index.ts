@@ -81,49 +81,54 @@ class Amuchina {
       } else {
 
         const attributes = node.getAttributeNames ();
+        const attributesLength = attributes.length;
 
-        for ( let i = 0, l = attributes.length; i < l; i++ ) {
+        if ( attributesLength ) {
 
-          const attribute = attributes[i];
-          const allowedValues = allowAttributes[attribute];
+          for ( let i = 0; i < attributesLength; i++ ) {
 
-          if ( !allowedValues || ( !allowedValues.includes ( allPrefixed ) && !allowedValues.includes ( tagPrefixed ) ) ) {
+            const attribute = attributes[i];
+            const allowedValues = allowAttributes[attribute];
 
-            node.removeAttribute ( attribute );
+            if ( !allowedValues || ( !allowedValues.includes ( allPrefixed ) && !allowedValues.includes ( tagPrefixed ) ) ) {
 
-          }
+              node.removeAttribute ( attribute );
 
-        }
-
-        if ( isElementHyperlink ( node ) ) {
-
-          const href = node.getAttribute ( 'href' );
-
-          if ( href && isScriptOrDataUrlLoose ( href ) && isScriptOrDataUrl ( node.protocol ) ) {
-
-            node.removeAttribute ( 'href' );
+            }
 
           }
 
-        } else if ( isElementAction ( node ) ) {
+          if ( isElementHyperlink ( node ) ) {
 
-          if ( isScriptOrDataUrl ( node.action ) ) {
+            const href = node.getAttribute ( 'href' );
 
-            node.removeAttribute ( 'action' );
+            if ( href && isScriptOrDataUrlLoose ( href ) && isScriptOrDataUrl ( node.protocol ) ) {
+
+              node.removeAttribute ( 'href' );
+
+            }
+
+          } else if ( isElementAction ( node ) ) {
+
+            if ( isScriptOrDataUrl ( node.action ) ) {
+
+              node.removeAttribute ( 'action' );
+
+            }
+
+          } else if ( isElementFormAction ( node ) ) {
+
+            if ( isScriptOrDataUrl ( node.formAction ) ) {
+
+              node.removeAttribute ( 'formaction' );
+
+            }
+
+          } else if ( isElementIframe ( node ) ) {
+
+            node.setAttribute ( 'sandobx', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
 
           }
-
-        } else if ( isElementFormAction ( node ) ) {
-
-          if ( isScriptOrDataUrl ( node.formAction ) ) {
-
-            node.removeAttribute ( 'formaction' );
-
-          }
-
-        } else if ( isElementIframe ( node ) ) {
-
-          node.setAttribute ( 'sandobx', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
 
         }
 
