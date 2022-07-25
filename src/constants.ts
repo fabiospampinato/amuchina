@@ -812,8 +812,8 @@ const NAMESPACES_ROOTS = {
 
 const NAMESPACES_PREFIXES = {
   HTML: '',
-  MATH: 'math:',
-  SVG: 'svg:'
+  SVG: 'svg:',
+  MATH: 'math:'
 };
 
 /* OTHERS */
