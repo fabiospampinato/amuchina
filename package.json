@@ -2,7 +2,7 @@
   "name": "amuchina",
   "repository": "github:fabiospampinato/amuchina",
   "description": "A work-in-progress HTML sanitizer that strives for: performance like window.Sanitizer, readiness like DOMPurify, and ability to run in a WebWorker like neither of those.",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
