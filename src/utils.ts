@@ -1,4 +1,8 @@
 
+/* IMPORT */
+
+import {FUNKY_TAG_NAMES} from './constants';
+
 /* MAIN */
 
 const cloneDeep = <T> ( value: T ): T => {
@@ -13,6 +17,12 @@ const isElement = ( value: Node ): value is Element => {
 
 };
 
+const isElementFunky = ( value: Element ): boolean => {
+
+  return FUNKY_TAG_NAMES.has ( value.tagName );
+
+};
+
 const isElementAction = ( value: Element ): value is HTMLFormElement => {
 
   return ( 'action' in value );
@@ -21,7 +31,7 @@ const isElementAction = ( value: Element ): value is HTMLFormElement => {
 
 const isElementIframe = ( value: Element ): value is HTMLIFrameElement => {
 
-  return ( value.tagName.toLowerCase () === 'iframe' );
+  return ( value.tagName === 'IFRAME' );
 
 };
 
@@ -151,4 +161,4 @@ const traverseElements = ( parent: Node, callback: ( node: Element, parent: Node
 
 /* EXPORT */
 
-export {cloneDeep, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, mergeMaps, traverseElements};
+export {cloneDeep, isElement, isElementFunky, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, mergeMaps, traverseElements};

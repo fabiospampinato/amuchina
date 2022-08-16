@@ -816,6 +816,17 @@ const NAMESPACES_PREFIXES = {
   [NAMESPACES.MATH]: 'math:'
 };
 
+/* TAG NAMES */
+
+const FUNKY_TAG_NAMES = new Set ([ // Funky elements need special handling
+  'A',
+  'AREA',
+  'BUTTON',
+  'FORM',
+  'IFRAME',
+  'INPUT'
+]);
+
 /* OTHERS */
 
 const DEFAULTS = {
@@ -839,4 +850,5 @@ const DEFAULTS = {
 export {HTML_ELEMENTS, SVG_ELEMENTS, MATH_ELEMENTS};
 export {HTML_ATTRIBUTES, SVG_ATTRIBUTES, MATH_ATTRIBUTES};
 export {NAMESPACES, NAMESPACES_ELEMENTS, NAMESPACES_ATTRIBUTES, NAMESPACES_ROOTS, NAMESPACES_PREFIXES};
+export {FUNKY_TAG_NAMES};
 export {DEFAULTS};

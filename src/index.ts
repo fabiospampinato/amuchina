@@ -3,7 +3,7 @@
 
 import {NAMESPACES, NAMESPACES_ELEMENTS, NAMESPACES_ROOTS, NAMESPACES_PREFIXES} from './constants';
 import {DEFAULTS} from './constants';
-import {cloneDeep, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, traverseElements} from './utils';
+import {cloneDeep, isElementFunky, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, traverseElements} from './utils';
 import type {Configuration} from './types';
 
 /* MAIN */
@@ -98,35 +98,39 @@ class Amuchina {
 
           }
 
-          if ( isElementHyperlink ( node ) ) {
+          if ( isElementFunky ( node ) ) {
 
-            const href = node.getAttribute ( 'href' );
+            if ( isElementHyperlink ( node ) ) {
 
-            if ( href && isScriptOrDataUrlLoose ( href ) && isScriptOrDataUrl ( node.protocol ) ) {
+              const href = node.getAttribute ( 'href' );
 
-              node.removeAttribute ( 'href' );
+              if ( href && isScriptOrDataUrlLoose ( href ) && isScriptOrDataUrl ( node.protocol ) ) {
+
+                node.removeAttribute ( 'href' );
+
+              }
+
+            } else if ( isElementAction ( node ) ) {
+
+              if ( isScriptOrDataUrl ( node.action ) ) {
+
+                node.removeAttribute ( 'action' );
+
+              }
+
+            } else if ( isElementFormAction ( node ) ) {
+
+              if ( isScriptOrDataUrl ( node.formAction ) ) {
+
+                node.removeAttribute ( 'formaction' );
+
+              }
+
+            } else if ( isElementIframe ( node ) ) {
+
+              node.setAttribute ( 'sandobx', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
 
             }
-
-          } else if ( isElementAction ( node ) ) {
-
-            if ( isScriptOrDataUrl ( node.action ) ) {
-
-              node.removeAttribute ( 'action' );
-
-            }
-
-          } else if ( isElementFormAction ( node ) ) {
-
-            if ( isScriptOrDataUrl ( node.formAction ) ) {
-
-              node.removeAttribute ( 'formaction' );
-
-            }
-
-          } else if ( isElementIframe ( node ) ) {
-
-            node.setAttribute ( 'sandobx', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
 
           }
 
