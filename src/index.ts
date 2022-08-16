@@ -1,9 +1,9 @@
 
 /* IMPORT */
 
-import {NAMESPACES_ELEMENTS, NAMESPACES_ROOTS, NAMESPACES_PREFIXES} from './constants';
+import {NAMESPACES, NAMESPACES_ELEMENTS, NAMESPACES_ROOTS, NAMESPACES_PREFIXES} from './constants';
 import {DEFAULTS} from './constants';
-import {cloneDeep, getNodeNamespace, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, traverseElements} from './utils';
+import {cloneDeep, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, traverseElements} from './utils';
 import type {Configuration} from './types';
 
 /* MAIN */
@@ -63,8 +63,8 @@ class Amuchina {
 
     traverseElements ( input, ( node, parent ) => {
 
-      const namespace = getNodeNamespace ( node );
-      const namespaceParent = getNodeNamespace ( parent );
+      const namespace = node.namespaceURI || NAMESPACES.HTML;
+      const namespaceParent = parent['namespaceURI'] || NAMESPACES.HTML;
       const elements = NAMESPACES_ELEMENTS[namespace];
       const root = NAMESPACES_ROOTS[namespace];
       const prefix = NAMESPACES_PREFIXES[namespace];

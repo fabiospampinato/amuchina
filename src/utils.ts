@@ -1,29 +1,9 @@
 
-/* IMPORT */
-
-import {NAMESPACES} from './constants';
-
 /* MAIN */
 
 const cloneDeep = <T> ( value: T ): T => {
 
   return JSON.parse ( JSON.stringify ( value ) );
-
-};
-
-const getNodeNamespace = ( node: Node ): 'HTML' | 'SVG' | 'MATH' => {
-
-  if ( isElement ( node ) ) {
-
-    const namespace = node.namespaceURI;
-
-    if ( namespace === NAMESPACES.MATH ) return 'MATH';
-
-    if ( namespace === NAMESPACES.SVG ) return 'SVG';
-
-  }
-
-  return 'HTML';
 
 };
 
@@ -171,4 +151,4 @@ const traverseElements = ( parent: Node, callback: ( node: Element, parent: Node
 
 /* EXPORT */
 
-export {cloneDeep, getNodeNamespace, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, mergeMaps, traverseElements};
+export {cloneDeep, isElement, isElementAction, isElementIframe, isElementFormAction, isElementHyperlink, isScriptOrDataUrl, isScriptOrDataUrlLoose, mergeMaps, traverseElements};
