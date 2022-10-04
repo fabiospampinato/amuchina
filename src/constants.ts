@@ -486,7 +486,6 @@ const HTML_ATTRIBUTES_ALLOW = [
   'span',
   'spellcheck',
   'src',
-  'srcdoc',
   'srclang',
   'srcset',
   'standby',
