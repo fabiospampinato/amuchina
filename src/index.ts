@@ -128,7 +128,7 @@ class Amuchina {
 
             } else if ( isElementIframe ( node ) ) {
 
-              node.setAttribute ( 'sandobx', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
+              node.setAttribute ( 'sandbox', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
 
             }
 
