@@ -128,6 +128,12 @@ class Amuchina {
 
             } else if ( isElementIframe ( node ) ) {
 
+              if ( isScriptOrDataUrl ( node.src ) ) {
+
+                node.removeAttribute ( 'formaction' );
+
+              }
+
               node.setAttribute ( 'sandbox', 'allow-scripts' ); //TODO: This is kinda arbitrary, it should be customizable and more flexible
 
             }
