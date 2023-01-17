@@ -14,7 +14,7 @@
     "compile": "tsex compile",
     "compile:watch": "tsex compile --watch",
     "test": "tsex test",
-    "test:watch": "tsex --watch",
+    "test:watch": "tsex test --watch",
     "update:fixtures": "wget -qO- https://raw.githubusercontent.com/cure53/DOMPurify/main/test/fixtures/expect.js | sed -E 's/module.exports =/export default/' > test/fixtures.js",
     "prepublishOnly": "npm run clean && npm run compile && npm run test"
   },
