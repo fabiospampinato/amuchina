@@ -8,8 +8,6 @@ import type {Configuration} from './types';
 
 /* MAIN */
 
-//TODO: Use window.Sanitizer under the hood once it ships and if it's significantly faster and if this is executed in a browser environment
-//TODO: Add support for running this in a WebWorker with a thin DOM library (no JSDOM)
 //TODO: Add a decent test suite, possibly one from an existing trusted library
 
 class Amuchina {
