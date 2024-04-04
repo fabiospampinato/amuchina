@@ -167,3 +167,4 @@ class Amuchina {
 /* EXPORT */
 
 export default Amuchina;
+export type {Configuration};
